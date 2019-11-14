@@ -13,8 +13,15 @@ class CommentsController < ApplicationController
 
     def create
         comment = Comment.new(comment_params)
-        comment.save ? (render json: comment) : ({message: "Invalid Comment"})
+        render json: comment.save ?  comment  : { message: "Invalid Comment" }
     end
+
+    def update
+        comment = Comment.find(params[:id])
+        comment.update(comment_params)
+        render json: comment
+    end
+
 
     def destroy
         comment = Comment.find(params[:id])
@@ -26,6 +33,6 @@ class CommentsController < ApplicationController
     private
 
     def comment_params
-        params.require(:comment).permit(:body, :likes)
+        params.require(:comment).permit(:body, :likes, :party_id)
     end
 end
